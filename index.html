@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overwatch Character Tracker</title>
+</head>
+<style>
+    body {
+        background-color: rgb(1, 6, 22);
+        color: white;
+
+        font-family: sans-serif;
+    }
+
+    .tank, .dps, .support, .tank2, .dps2, .support2 {
+        position: relative;
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        gap: 10px;
+    }
+
+    .tanks, .dpss, .supports {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .characters {
+        width: 65px;
+        border: white 2px solid;
+    }
+
+    .characters:hover {
+        border: red 2px solid;
+    }
+
+    .character-list {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .displayed-data {
+        position: relative;
+
+        display: flex;
+        justify-content: space-evenly;
+        flex-direction: row;
+        width: auto;
+        height: 420px;
+
+        padding: 15px 0px 0px 0px;
+
+        margin-bottom: 10px;
+
+        background-color: rgb(6, 7, 51);
+
+        border: 2px solid white;
+        border-radius: 20px;
+    }
+
+    img {
+        width: 100px;
+    }
+
+    .container {
+        position: relative;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+
+        bottom: 50px;
+    }
+
+    .character-menu {
+        position: relative;
+        width: 200%;
+
+        background-color:  rgb(53, 60, 97);
+        border: 2px solid rgb(228, 228, 228);
+
+        display: flex;
+        gap: 20px;
+    }
+
+    .submit-button {
+        position: relative;
+        margin: 20px 10px 0px 0px;
+        float: right;
+
+        padding: 10px 20px;
+        background-color: yellow;
+        border: rgb(1, 6, 22) solid 2px;
+        font-size: 105%;
+    }
+
+    .clear-button {
+        position: relative;
+        margin: 20px 60px 0px 0px;
+        float: right;
+
+        padding: 10px 20px;
+        background-color: yellow;
+        border: rgb(1, 6, 22) solid 2px;
+        font-size: 105%;
+    }
+
+    .download-button {
+        position: relative;
+
+        padding: 10px 20px;
+        background-color: rgb(0, 153, 255);
+        border: rgb(1, 6, 22) solid 2px;
+        font-size: 105%;
+    }
+
+    button:hover {
+        border: 2px solid white;
+    }
+
+    h2 {
+        position: relative;
+        top: 30px;
+    }
+
+    footer {
+        position: relative;
+        text-align: center;
+        line-height: 5px;
+    }
+
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    main {
+        position: relative;
+        padding: 0px 10px 80px;
+        border-radius: 20px;
+        margin-bottom: 15px;
+        background-color: rgb(6, 7, 51);
+
+        border: 2px solid white;
+    }
+
+</style>
+<body>
+    <header>
+        <h1 style="position: relative; margin-left: 20px;">Most Played Overwatch Heros</h1>
+        <container style="position: relative; display:flex; align-items: center; gap: 10px;">
+            <h4>Upload JSON file:</h4>
+            <input type="file" id="uploadData" accept="application/json">
+        </container>
+        
+    </header>
+    <div class="displayed-data">
+        <div class="container">
+            <h2>Tanks</h2>
+            <div class="character-menu">
+                <img type="image" id="most-played-tank" class="MPT" src="images/ana.png">
+                <container>
+                    <h3 id="tankC1Name">Name</h3>
+                    <h3 id="tankC1">Count</h3>
+                </container>
+            </div>
+            <div class="character-menu" id="character-menu">
+                <img type="image" id="2nd-played-tank" class="2PT" src="images/ana.png">
+                <container>
+                    <h3 id="tankC2Name">Name</h3>
+                    <h3 id="tankC2">Count</h3>
+                </container>
+            </div>
+            <div class="character-menu" id="character-menu">
+                <img type="image" id="3rd-played-tank" class="3PT" src="images/ana.png">
+                <container>
+                    <h3 id="tankC3Name">Name</h3>
+                    <h3 id="tankC3">Count</h3>
+                </container>
+            </div>
+        </div>
+        <div class="container">
+            <h2>DPS</h2>
+            <div class="character-menu">
+                <img type="image" id="most-played-dps" class="MPDPS" src="images/ana.png">
+                <container>
+                    <h3 id="dpsC1Name">Name</h3>
+                    <h3 id="dpsC1">Count</h3>
+                </container>
+            </div>
+            <div class="character-menu">
+                <img type="image" id="2nd-played-dps" class="2PDPS" src="images/ana.png">
+                <container>
+                    <h3 id="dpsC2Name">Name</h3>
+                    <h3 id="dpsC2">Count</h3>
+                </container>
+            </div>
+            <div class="character-menu">
+                <img type="image" id="3rd-played-dps" class="3PDPS" src="images/ana.png">
+                <container>
+                    <h3 id="dpsC3Name">Name</h3>
+                    <h3 id="dpsC3">Count</h3>
+                </container>
+            </div>
+        </div>
+        <div class="container">
+            <h2>Supports</h2>
+            <div class="character-menu">
+                <img type="image" id="most-played-support" class="MPS" src="images/ana.png">
+                <container>
+                    <h3 id="supportC1Name">Name</h3>
+                    <h3 id="supportC1">Count</h3>
+                </container>
+            </div>
+            <div class="character-menu">
+                <img type="image" id="2nd-played-support" class="2PS" src="images/ana.png">
+                <container>
+                    <h3 id="supportC2Name">Name</h3>
+                    <h3 id="supportC2">Count</h3>
+                </container>
+            </div>
+            <div class="character-menu">
+                <img type="image" id="3rd-played-support" class="3PS"  src="images/ana.png">
+                <container>
+                    <h3 id="supportC3Name">Name</h3>
+                    <h3 id="supportC3">Count</h3>
+                </container>
+            </div>
+        </div>
+    </div>
+    <main>
+        <h1 style="position: relative; margin-left: 20px;">Overwatch Characters Tracker</h1>
+        <div class="character-list">
+            <div class="tanks">
+                <div class="tank" id="tank"></div>
+                <div class="tank2" id="tank2"></div>
+            </div>
+            <div class="dpss">
+                <div class="dps" id="dps"></div>
+                <div class="dps2" id="dps2"></div>
+            </div>
+            <div class="supports">
+                <div class="support" id="support"></div>
+                <div class="support2" id="support2"></div>
+            </div>
+        </div>
+        <button style="background-color: rgb(235, 97, 97);" class="clear-button" onclick="ClearScreen()">Clear</button>
+        <button onclick="AddToJSON()" class="submit-button">Submit</button>
+    </main>
+    <footer>
+        <button onclick="saveData()" class="download-button">Download</button>
+        <h4>Note: Saving your data will download a JSON file. Any alterations may break your setup.</h4>
+    </footer>
+</body>
+    <script>
+        let tankcount = 0;
+        let dpscount = 0;
+        let supportcount = 0;
+    
+        let data = {
+            "ana": { "name": "Ana", "count": 0, "png": "images/ana.png", "role": "support" },
+            "ashe": { "name": "Ashe", "count": 0, "png": "images/ashe.png", "role": "dps" },
+            "baptiste": { "name": "Baptiste", "count": 0, "png": "images/baptiste.png", "role": "support" },
+            "bastion": { "name": "Bastion", "count": 0, "png": "images/bastion.png", "role": "dps" },
+            "brigette": { "name": "Brigette", "count": 0, "png": "images/brigitte.png", "role": "support" },          
+            "cassidy": { "name": "Cassidy", "count": 0, "png": "images/cassidy.png", "role": "dps" }, 
+            "doomfist": { "name": "Doomfist", "count": 0, "png": "images/doomfist.png", "role": "tank" }, 
+            "dva": { "name": "Dva", "count": 0, "png": "images/dva.png", "role": "tank" }, 
+            "echo": { "name": "Echo", "count": 0, "png": "images/echo.png", "role": "dps" }, 
+            "freja": { "name": "Freja", "count": 0,  "png": "images/freja.png", "role": "dps" }, 
+            "genji": { "name": "Genji", "count": 0, "png": "images/genji.png", "role": "dps" },
+            "hanzo": { "name": "Hanzo", "count": 0, "png": "images/hanzo.png", "role": "dps" }, 
+            "hazard": { "name": "Hazard", "count": 0, "png": "images/hazard.png", "role": "tank" },  
+            "illari": { "name": "Illari", "count": 0, "png": "images/illari.png", "role": "support" }, 
+            "junkerqueen": { "name": "JunkerQueen", "count": 0, "png": "images/junker-queen.png", "role": "tank" }, 
+            "junkrat": { "name": "Junkrat", "count": 0, "png": "images/junkrat.png", "role": "dps" }, 
+            "juno": { "name": "Juno", "count": 0, "png": "images/juno.png", "role": "support" }, 
+            "kiriko": { "name": "Kiriko", "count": 0, "png": "images/kiriko.png", "role": "support" }, 
+            "lifeweaver": { "name": "Lifeweaver", "count": 0, "png": "images/lifeweaver.png", "role": "support" }, 
+            "lucio": { "name": "Lucio", "count": 0, "png": "images/lucio.png", "role": "support" }, 
+            "mauga": { "name": "Mauga", "count": 0, "png": "images/mauga.png", "role": "tank" }, 
+            "mei": { "name": "Mei", "count": 0, "png": "images/mei.png", "role": "dps" }, 
+            "mercy": { "name": "Mercy", "count": 0, "png": "images/mercy.png", "role": "support" }, 
+            "moira": { "name": "Moira", "count": 0, "png": "images/moira.png", "role": "support"  }, 
+            "orisa": { "name": "Orisa", "count": 0, "png": "images/orisa.png", "role": "tank" }, 
+            "pharah": { "name": "Pharah", "count": 0, "png": "images/pharah.png", "role": "dps" }, 
+            "ramattra": { "name": "Ramattra", "count": 0, "png": "images/ramattra.png", "role": "tank" }, 
+            "reaper": { "name": "Reaper", "count": 0, "png": "images/reaper.png", "role": "dps" }, 
+            "reinhardt": { "name": "Reinhardt", "count": 0, "png": "images/reinhardt.png", "role": "tank" }, 
+            "roadhog": { "name": "Roadhog", "count": 0, "png": "images/roadhog.png", "role": "tank" }, 
+            "sigma": { "name": "Sigma", "count": 0, "png": "images/sigma.png", "role": "tank" }, 
+            "sojourn": { "name": "Sojourn", "count": 0, "png": "images/sojourn.png", "role": "dps" }, 
+            "solider76": { "name": "Solider76", "count": 0, "png": "images/soldier-76.png", "role": "dps" }, 
+            "sombra": { "name": "Sombra", "count": 0, "png": "images/sombra.png", "role": "dps" }, 
+            "symmetra": { "name": "Symmetra", "count": 0, "png": "images/symmetra.png", "role": "dps" }, 
+            "torbjorn": { "name": "Torbjorn", "count": 0, "png": "images/torbjorn.png", "role": "dps" }, 
+            "tracer": { "name": "Tracer", "count": 0, "png": "images/tracer.png", "role": "dps" }, 
+            "venture": { "name": "Venture", "count": 0, "png": "images/venture.png", "role": "dps" }, 
+            "widowmaker": { "name": "Widowmaker", "count": 0, "png": "images/widowmaker.png", "role": "dps" }, 
+            "winston": { "name": "Winston","count": 0, "png": "images/winston.png", "role": "tank" }, 
+            "wreckingball": { "name": "WreckingBall", "count": 0, "png": "images/wrecking-ball.png", "role": "tank" }, 
+            "zarya": { "name": "Zarya", "count": 0, "png": "images/zarya.png", "role": "tank" }, 
+            "zenyatta": { "name": "Zenyatta", "count": 0, "png": "images/zenyatta.png", "role": "support" }
+        }
+
+        let tank = document.getElementById("tank");
+        let tank2 = document.getElementById("tank2");
+        let dps = document.getElementById("dps");
+        let dps2 = document.getElementById("dps2");
+        let support = document.getElementById("support");
+        let support2 = document.getElementById("support2");
+
+        // Most played variables
+        let tankC1 = 0, tankC2 = 0, tankC3 = 0;
+        let tankC1Ele = document.getElementById("most-played-tank");
+        let tankC2Ele = document.getElementById("2nd-played-tank");
+        let tankC3Ele = document.getElementById("3rd-played-tank");
+        let tankC1Name = "", tankC2Name = "", tankC3Name = "";
+
+        let dpsC1 = 0, dpsC2 = 0, dpsC3 = 0;
+        let dpsC1Ele = document.getElementById("most-played-dps");
+        let dpsC2Ele = document.getElementById("2nd-played-dps");
+        let dpsC3Ele = document.getElementById("3rd-played-dps");
+        let dpsC1Name = "", dpsC2Name = "", dpsC3Name = "";
+
+        let supportC1 = 0, supportC2 = 0, supportC3 = 0;
+        let supportC1Ele = document.getElementById("most-played-support");
+        let supportC2Ele = document.getElementById("2nd-played-support");
+        let supportC3Ele = document.getElementById("3rd-played-support");
+        let supportC1Name = "", supportC2Name = "", supportC3Name = "";
+
+        let supportArray = [], dpsArray = [], tankArray = [];
+        
+        for (const key in data) {
+            const character = data[key];
+
+            const button = document.createElement("input");
+            button.classList.add('characters');
+            button.id = (character.name).toLowerCase();
+            button.type = "image";
+            button.value = character.name;
+            button.textContent = character.name;
+            button.src = character.png;
+
+            button.onclick = function() {
+                if (button.style.border == "2px solid yellow") {
+                    button.style.border = "white 2px solid";
+                } else {
+                    button.style.border = "yellow 2px solid";
+                }
+            }
+
+            if (character.role == "tank") { tankcount++; 
+                if (tankcount >= 8) {
+                    tank2.appendChild(button);
+                } else {
+                    tank.appendChild(button);
+                }
+
+                if (character.count >= tankC1) {
+                    tankC3Name = tankC2Name;
+                    tankC2Name = tankC1Name;
+                    tankC1Name = character.name;
+                    tankC3 = tankC2;
+                    tankC2 = tankC1;
+                    tankC1 = character.count;
+                    tankC3Ele.src = tankC2Ele.src;
+                    tankC2Ele.src = tankC1Ele.src;
+                    tankC1Ele.src = character.png;
+                } else if (character.count >= tankC2) {
+                    tankC3Name = tankC2Name;
+                    tankC2Name = character.name;
+                    tankC3 = tankC2;
+                    tankC2 = character.count;
+                    tankC3Ele.src = tankC2Ele.src;
+                    tankC2Ele.src = character.png;
+                } else if (character.count >= tankC3) {
+                    tankC3Name = character.name;
+                    tankC3 = character.count;
+                    tankC3Ele.src = character.png;
+                };
+
+                document.getElementById('tankC1Name').innerHTML = tankC1Name;
+                document.getElementById('tankC2Name').innerHTML = tankC2Name;
+                document.getElementById('tankC3Name').innerHTML = tankC3Name;
+
+                document.getElementById('tankC1').innerHTML = "Count: " + tankC1;
+                document.getElementById('tankC2').innerHTML = "Count: " + tankC2;
+                document.getElementById('tankC3').innerHTML = "Count: " + tankC3;
+            };
+            
+            if (character.role == "dps") { dps.appendChild(button); dpscount++;
+                if (dpscount >= 11) {
+                    dps2.appendChild(button);
+                } else {
+                    dps.appendChild(button);
+                }
+
+                if (character.count >= dpsC1) {
+                    dpsC3Name = dpsC2Name;
+                    dpsC2Name = dpsC1Name;
+                    dpsC1Name = character.name;
+                    dpsC3 = dpsC2;
+                    dpsC2 = dpsC1;
+                    dpsC1 = character.count;
+                    dpsC3Ele.src = dpsC2Ele.src;
+                    dpsC2Ele.src = dpsC1Ele.src;
+                    dpsC1Ele.src = character.png;
+                } else if (character.count >= dpsC2) {
+                    dpsC3Name = dpsC2Name;
+                    dpsC2Name = character.name;
+                    dpsC3 = dpsC2;
+                    dpsC2 = character.count;
+                    dpsC3Ele.src = dpsC2Ele.src;
+                    dpsC2Ele.src = character.png;
+                } else if (character.count >= dpsC3) {
+                    dpsC3Name = character.name;
+                    dpsC3 = character.count;
+                    dpsC3Ele.src = character.png;
+                };
+
+                document.getElementById('dpsC1Name').innerHTML = dpsC1Name;
+                document.getElementById('dpsC2Name').innerHTML = dpsC2Name;
+                document.getElementById('dpsC3Name').innerHTML = dpsC3Name;
+
+                document.getElementById('dpsC1').innerHTML = "Count: " + dpsC1;
+                document.getElementById('dpsC2').innerHTML = "Count: " + dpsC2;
+                document.getElementById('dpsC3').innerHTML = "Count: " + dpsC3;
+            };
+            if (character.role == "support") { support.appendChild(button); supportcount++;
+                if (supportcount >= 7) {
+                    support2.appendChild(button);
+                } else {
+                    support.appendChild(button);
+                }
+
+                if (character.count >= supportC1) {
+                    supportC3Name = supportC2Name;
+                    supportC2Name = supportC1Name;
+                    supportC1Name = character.name;
+                    supportC3 = supportC2;
+                    supportC2 = supportC1;
+                    supportC1 = character.count;
+                    supportC3Ele.src = supportC2Ele.src;
+                    supportC2Ele.src = supportC1Ele.src;
+                    supportC1Ele.src = character.png;
+                } else if (character.count >= supportC2) {
+                    supportC3Name = supportC2Name;
+                    supportC2Name = character.name;
+                    supportC3 = supportC2;
+                    supportC2 = character.count;
+                    supportC3Ele.src = supportC2Ele.src;
+                    supportC2Ele.src = character.png;
+                } else if (character.count >= supportC3) {
+                    supportC3Name = character.name;
+                    supportC3 = character.count;
+                    supportC3Ele.src = character.png;
+                };
+
+                document.getElementById('supportC1Name').innerHTML = supportC1Name;
+                document.getElementById('supportC2Name').innerHTML = supportC2Name;
+                document.getElementById('supportC3Name').innerHTML = supportC3Name;
+
+                document.getElementById('supportC1').innerHTML = "Count: " + supportC1;
+                document.getElementById('supportC2').innerHTML = "Count: " + supportC2;
+                document.getElementById('supportC3').innerHTML = "Count: " + supportC3;
+            };
+        }
+        
+        function AddToJSON() {
+            let selectedTanks = [], selectedDPS = [], selectedSupports = []
+
+            for (const child of tank.children) {
+                if (child.style.border == "2px solid yellow") {
+                    selectedTanks.push(child.value);
+                }
+            }
+            for (const child of tank2.children) {
+                if (child.style.border == "2px solid yellow") {
+                    selectedTanks.push(child.value);
+                }
+            }
+            for (const child of dps.children) {
+                if (child.style.border == "2px solid yellow") {
+                    selectedDPS.push(child.value);
+                }
+            }
+            for (const child of dps2.children) {
+                if (child.style.border == "2px solid yellow") {
+                    selectedDPS.push(child.value);
+                }
+            }
+            for (const child of support.children) {
+                if (child.style.border == "2px solid yellow") {
+                    selectedSupports.push(child.value);
+                }
+            }
+            for (const child of support2.children) {
+                if (child.style.border == "2px solid yellow") {
+                    selectedSupports.push(child.value);
+                }
+            }
+
+            let alertMSG = "";
+            if (selectedTanks.length > 1) {
+                alertMSG += "You have more than 1 Tank selected\n"
+            }
+            if (selectedDPS.length > 2) {
+                alertMSG += "You have more than 2 DPS selected\n"
+            }
+            if (selectedSupports.length > 2) {
+                alertMSG += "You have more than 2 Supports selected\n"
+            }
+            if (alertMSG != "") {
+                alert(alertMSG)
+            } else {
+                selectedTanks.forEach(element => {
+                    for (const key in data) {
+                        if (key === element.toLowerCase()) {
+                            data[key].count++;
+                        }
+                    }
+                });
+                selectedDPS.forEach(element => {
+                    for (const key in data) {
+                        if (key === element.toLowerCase()) {
+                            data[key].count++;
+                        }
+                    }
+                });
+                selectedSupports.forEach(element => {
+                    for (const key in data) {
+                        if (key === element.toLowerCase()) {
+                            data[key].count++;
+                        }
+                    }
+                });
+                resetData();
+            }
+        }
+
+        function resetData() {
+            document.getElementById('tankC1Name').innerHTML = "";
+            document.getElementById('tankC2Name').innerHTML = "";
+            document.getElementById('tankC3Name').innerHTML = "";
+            document.getElementById('tankC1').innerHTML = "Count: ";
+            document.getElementById('tankC2').innerHTML = "Count: ";
+            document.getElementById('tankC3').innerHTML = "Count: ";
+
+            document.getElementById('dpsC1Name').innerHTML = "";
+            document.getElementById('dpsC2Name').innerHTML = "";
+            document.getElementById('dpsC3Name').innerHTML = "";
+            document.getElementById('dpsC1').innerHTML = "Count: ";
+            document.getElementById('dpsC2').innerHTML = "Count: ";
+            document.getElementById('dpsC3').innerHTML = "Count: ";
+
+            document.getElementById('supportC1Name').innerHTML = "";
+            document.getElementById('supportC2Name').innerHTML = "";
+            document.getElementById('supportC3Name').innerHTML = "";
+            document.getElementById('supportC1').innerHTML = "Count: ";
+            document.getElementById('supportC2').innerHTML = "Count: ";
+            document.getElementById('supportC3').innerHTML = "Count: ";
+
+            let tankC1 = 0, tankC2 = 0, tankC3 = 0;
+            let tankC1Name = "", tankC2Name = "", tankC3Name = "";
+
+            let dpsC1 = 0, dpsC2 = 0, dpsC3 = 0;
+            let dpsC1Name = "", dpsC2Name = "", dpsC3Name = "";
+
+            let supportC1 = 0, supportC2 = 0, supportC3 = 0;
+            let supportC1Name = "", supportC2Name = "", supportC3Name = "";
+
+            for (const key in data) {
+                const character = data[key];
+
+                if (character.role == "tank") {
+                    if (character.count >= tankC1) {
+                        tankC3Name = tankC2Name;
+                        tankC2Name = tankC1Name;
+                        tankC1Name = character.name;
+                        tankC3 = tankC2;
+                        tankC2 = tankC1;
+                        tankC1 = character.count;
+                        tankC3Ele.src = tankC2Ele.src;
+                        tankC2Ele.src = tankC1Ele.src;
+                        tankC1Ele.src = character.png;
+                    } else if (character.count >= tankC2) {
+                        tankC3Name = tankC2Name;
+                        tankC2Name = character.name;
+                        tankC3 = tankC2;
+                        tankC2 = character.count;
+                        tankC3Ele.src = tankC2Ele.src;
+                        tankC2Ele.src = character.png;
+                    } else if (character.count >= tankC3) {
+                        tankC3Name = character.name;
+                        tankC3 = character.count;
+                        tankC3Ele.src = character.png;
+                    };
+
+                    document.getElementById('tankC1Name').innerHTML = tankC1Name;
+                    document.getElementById('tankC2Name').innerHTML = tankC2Name;
+                    document.getElementById('tankC3Name').innerHTML = tankC3Name;
+
+                    document.getElementById('tankC1').innerHTML = "Count: " + tankC1;
+                    document.getElementById('tankC2').innerHTML = "Count: " + tankC2;
+                    document.getElementById('tankC3').innerHTML = "Count: " + tankC3;
+                };
+                
+                if (character.role == "dps") {
+                    if (character.count >= dpsC1) {
+                        dpsC3Name = dpsC2Name;
+                        dpsC2Name = dpsC1Name;
+                        dpsC1Name = character.name;
+                        dpsC3 = dpsC2;
+                        dpsC2 = dpsC1;
+                        dpsC1 = character.count;
+                        dpsC3Ele.src = dpsC2Ele.src;
+                        dpsC2Ele.src = dpsC1Ele.src;
+                        dpsC1Ele.src = character.png;
+                    } else if (character.count >= dpsC2) {
+                        dpsC3Name = dpsC2Name;
+                        dpsC2Name = character.name;
+                        dpsC3 = dpsC2;
+                        dpsC2 = character.count;
+                        dpsC3Ele.src = dpsC2Ele.src;
+                        dpsC2Ele.src = character.png;
+                    } else if (character.count >= dpsC3) {
+                        dpsC3Name = character.name;
+                        dpsC3 = character.count;
+                        dpsC3Ele.src = character.png;
+                    };
+
+                    document.getElementById('dpsC1Name').innerHTML = dpsC1Name;
+                    document.getElementById('dpsC2Name').innerHTML = dpsC2Name;
+                    document.getElementById('dpsC3Name').innerHTML = dpsC3Name;
+
+                    document.getElementById('dpsC1').innerHTML = "Count: " + dpsC1;
+                    document.getElementById('dpsC2').innerHTML = "Count: " + dpsC2;
+                    document.getElementById('dpsC3').innerHTML = "Count: " + dpsC3;
+                };
+                if (character.role == "support") {
+                    if (character.count >= supportC1) {
+                        supportC3Name = supportC2Name;
+                        supportC2Name = supportC1Name;
+                        supportC1Name = character.name;
+                        supportC3 = supportC2;
+                        supportC2 = supportC1;
+                        supportC1 = character.count;
+                        supportC3Ele.src = supportC2Ele.src;
+                        supportC2Ele.src = supportC1Ele.src;
+                        supportC1Ele.src = character.png;
+                    } else if (character.count >= supportC2) {
+                        supportC3Name = supportC2Name;
+                        supportC2Name = character.name;
+                        supportC3 = supportC2;
+                        supportC2 = character.count;
+                        supportC3Ele.src = supportC2Ele.src;
+                        supportC2Ele.src = character.png;
+                    } else if (character.count >= supportC3) {
+                        supportC3Name = character.name;
+                        supportC3 = character.count;
+                        supportC3Ele.src = character.png;
+                    };
+
+                    document.getElementById('supportC1Name').innerHTML = supportC1Name;
+                    document.getElementById('supportC2Name').innerHTML = supportC2Name;
+                    document.getElementById('supportC3Name').innerHTML = supportC3Name;
+
+                    document.getElementById('supportC1').innerHTML = "Count: " + supportC1;
+                    document.getElementById('supportC2').innerHTML = "Count: " + supportC2;
+                    document.getElementById('supportC3').innerHTML = "Count: " + supportC3;
+                };
+            }
+        }
+
+        function ClearScreen() {
+            for (const child of tank.children) {
+                child.style.border = "white solid 2px"
+            }
+            for (const child of tank2.children) {
+                child.style.border = "white solid 2px"
+            }
+            for (const child of dps.children) {
+                child.style.border = "white solid 2px"
+            }
+            for (const child of dps2.children) {
+                child.style.border = "white solid 2px"
+            }
+            for (const child of support.children) {
+                child.style.border = "white solid 2px"
+            }
+            for (const child of support2.children) {
+                child.style.border = "white solid 2px"
+            }
+        }
+        
+        function saveData() {
+            const json = JSON.stringify(data, null, 2); // pretty print
+            const blob = new Blob([json], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "overwatch-data.json";
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        document.getElementById("uploadData").addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const loadedData = JSON.parse(e.target.result);
+                    Object.assign(data, loadedData); // Overwrite `data` in place
+                    resetData();
+                } catch (err) {
+                    console.error("Invalid JSON file");
+                }
+            };
+            reader.readAsText(file);
+        });
+
+    </script>
+</html>
