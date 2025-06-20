@@ -704,7 +704,7 @@
         }
         
         function saveData() {
-            const json = JSON.stringify(data, null, 2); // pretty print
+            const json = JSON.stringify(data, null, 2);
             const blob = new Blob([json], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
@@ -722,7 +722,7 @@
             reader.onload = function(e) {
                 try {
                     const loadedData = JSON.parse(e.target.result);
-                    Object.assign(data, loadedData); // Overwrite `data` in place
+                    Object.assign(data, loadedData);
                     resetData();
                 } catch (err) {
                     console.error("Invalid JSON file");
